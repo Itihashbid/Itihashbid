@@ -1,0 +1,17 @@
+.category-wrap{ max-width:1180px; margin:0 auto; padding:44px 40px 60px; }
+
+.category-header{ margin-bottom:36px; max-width:640px; }
+.category-header .hero-eyebrow{ color:var(--bronze); font-size:12px; letter-spacing:3px; }
+.category-header h1{ font-size:30px; color:var(--navy); margin:10px 0 14px; }
+.category-header p{ font-size:14.5px; color:#6b6048; line-height:1.8; }
+
+.category-wrap .card-grid{ grid-template-columns:1fr 1fr; }
+
+@media (max-width:600px){
+  .category-wrap .card-grid{ grid-template-columns:1fr; }
+}
+.empty-state{
+  text-align:center; padding:60px 20px;
+  color:var(--slate); font-size:15px;
+  background:var(--parchment-dark); border:1px dashed #DACBA0;
+}

@@ -1,0 +1,9 @@
+.search-box-wrap{ margin-bottom:32px; }
+.search-input{
+  width:100%; padding:14px 18px; font-size:15px;
+  font-family:'Hind Siliguri', sans-serif;
+  border:1px solid var(--bronze); background:#fff; color:var(--ink);
+  outline:none;
+}
+.search-input:focus{ border-color:var(--navy); }
+.no-results{ text-align:center; padding:40px; color:var(--slate); }
