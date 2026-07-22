@@ -1,0 +1,39 @@
+.info-wrap{ max-width:800px; margin:0 auto; padding:44px 40px 60px; }
+.info-header{ margin-bottom:32px; }
+.info-header h1{ font-size:30px; color:var(--navy); margin:10px 0 14px; }
+.info-lead{ font-size:14.5px; color:#6b6048; line-height:1.8; }
+
+.info-body p{ font-size:15px; line-height:2; color:var(--ink); margin-bottom:20px; }
+.info-body h2{ font-size:20px; color:var(--navy); margin:28px 0 12px; }
+
+.contact-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:36px; margin-top:10px; }
+.contact-form{ display:flex; flex-direction:column; gap:6px; }
+.contact-form label{ font-size:13px; color:var(--navy); margin-top:12px; font-weight:600; }
+.contact-form input, .contact-form textarea{
+  padding:12px 14px; font-family:'Hind Siliguri', sans-serif; font-size:14px;
+  border:1px solid #DACBA0; background:#fff; color:var(--ink); outline:none; resize:vertical;
+}
+.contact-form input:focus, .contact-form textarea:focus{ border-color:var(--bronze); }
+.contact-form button{
+  margin-top:18px; padding:13px; background:var(--navy-deep); color:var(--parchment);
+  border:none; font-family:'Hind Siliguri', sans-serif; font-size:14.5px; cursor:pointer;
+  letter-spacing:.5px;
+}
+.contact-form button:hover{ background:var(--navy); }
+
+.contact-info{ background:var(--parchment-dark); border:1px solid #DFCE9E; padding:24px; height:fit-content; }
+.contact-info h3{ font-family:'Tiro Bangla',serif; font-size:17px; color:var(--navy); margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--bronze); }
+.contact-item{ font-size:13.5px; color:var(--ink); padding:10px 0; border-bottom:1px solid #E4D6AE; }
+.contact-item:last-child{ border-bottom:none; }
+
+/* Dark mode support */
+body.dark-mode .info-body p{ color:#B9C2D4; }
+body.dark-mode .info-body h2{ color:#F3ECDA; }
+body.dark-mode .info-lead{ color:#8894A8; }
+body.dark-mode .contact-form input, body.dark-mode .contact-form textarea{ background:#1A2540; color:#E8E2D0; border-color:#2E3E5E; }
+body.dark-mode .contact-info{ background:#1A2540; border-color:#2E3E5E; }
+body.dark-mode .contact-item{ color:#D8DEE9; border-bottom-color:#2E3E5E; }
+
+@media (max-width:700px){
+  .contact-grid{ grid-template-columns:1fr; }
+}
