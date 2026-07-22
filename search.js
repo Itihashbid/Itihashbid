@@ -1,38 +1,33 @@
-// সব আর্টিকেলের তথ্য এখানে রাখা আছে
-const articles = [
-  {
-    title: "মহাস্থানগড়ে খননে মিলল নতুন প্রত্নসামগ্রী",
-    desc: "প্রাচীন পুণ্ড্রনগরের ধ্বংসাবশেষে প্রত্নতাত্ত্বিকরা খুঁজে পেয়েছেন মৌর্য যুগের মুদ্রা ও শিলালিপি।",
-    cat: "প্রত্নতত্ত্ব",
-    badge: "প্রাচীন সভ্যতা",
-    url: "article.html"
-  },
-  {
-    title: "মেসোপটেমিয়া: লেখার প্রথম উদ্ভাবনের গল্প",
-    desc: "কিউনিফর্ম লিপির উৎপত্তি ও সুমেরীয় সভ্যতার প্রশাসনিক ব্যবস্থা নিয়ে বিস্তারিত বিশ্লেষণ।",
-    cat: "সভ্যতা",
-    badge: "বিশ্ব ইতিহাস",
-    url: "article-2.html"
-  },
-  {
-    title: "বাংলার মসলিন বাণিজ্য কীভাবে ধ্বংস হলো",
-    desc: "ইস্ট ইন্ডিয়া কোম্পানির নীতি কীভাবে বাংলার বস্ত্রশিল্পকে পঙ্গু করে দিয়েছিল, তার পূর্ণাঙ্গ বিবরণ।",
-    cat: "অর্থনীতি",
-    badge: "ঔপনিবেশিক কাল",
-    url: "article-3.html"
-  },
-  {
-    title: "সুবাহ বাংলা: এক সমৃদ্ধ প্রদেশের উত্থান",
-    desc: "ঢাকা প্রতিষ্ঠা থেকে শুরু করে বাংলার প্রশাসনিক কাঠামোর বিবর্তন নিয়ে বিশ্লেষণ।",
-    cat: "শাসনব্যবস্থা",
-    badge: "মধ্যযুগ",
-    url: "article-4.html"
-  }
-];
+// search.js — এখন Firestore থেকে সরাসরি সব আর্টিকেল আনবে (হার্ডকোড লিস্ট আর নেই)
+
+import { db } from "./firebase-config.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const searchInput = document.getElementById('searchInput');
 const resultsBox = document.getElementById('searchResults');
 const noResults = document.getElementById('noResults');
+
+let articles = [];      // Firestore থেকে আসা সব আর্টিকেল এখানে জমা হবে
+let articlesLoaded = false;
+
+// পেজ লোড হওয়ার সাথে সাথেই একবার সব আর্টিকেল এনে রাখা হচ্ছে,
+// যাতে প্রতিবার টাইপ করার সময় বারবার ডাটাবেসে না যেতে হয়
+async function loadAllArticles(){
+  try{
+    const snapshot = await getDocs(collection(db, "articles"));
+    articles = snapshot.docs.map(docSnap => ({
+      id: docSnap.id,
+      title: docSnap.data().title || "",
+      desc: docSnap.data().desc || "",
+      cat: docSnap.data().cat || "",
+      badge: docSnap.data().badge || "",
+      image: docSnap.data().image || ""
+    }));
+    articlesLoaded = true;
+  } catch(err){
+    resultsBox.innerHTML = "<p style='color:var(--slate); font-size:13.5px;'>লেখাগুলো লোড করতে সমস্যা হয়েছে।</p>";
+  }
+}
 
 function renderResults(list){
   resultsBox.innerHTML = "";
@@ -44,11 +39,12 @@ function renderResults(list){
 
   list.forEach(item => {
     const card = document.createElement('a');
-    card.href = item.url;
+    card.href = `read.html?id=${item.id}`;
     card.className = "card";
     card.style.textDecoration = "none";
+    const imgStyle = item.image ? `style="background-image:url('${item.image}'); background-size:cover; background-position:center;"` : '';
     card.innerHTML = `
-      <div class="card-img"><span class="card-badge">${item.badge}</span></div>
+      <div class="card-img" ${imgStyle}><span class="card-badge">${item.badge}</span></div>
       <div class="card-body">
         <span class="cat">${item.cat}</span>
         <h3 class="headline">${item.title}</h3>
@@ -59,17 +55,26 @@ function renderResults(list){
   });
 }
 
-searchInput.addEventListener('input', () => {
-  const query = searchInput.value.trim().toLowerCase();
-  if(query === ""){
+searchInput.addEventListener('input', async () => {
+  const q = searchInput.value.trim().toLowerCase();
+
+  if(!articlesLoaded){
+    await loadAllArticles();
+  }
+
+  if(q === ""){
     renderResults([]);
     noResults.style.display = "none";
     return;
   }
+
   const filtered = articles.filter(item =>
-    item.title.toLowerCase().includes(query) ||
-    item.desc.toLowerCase().includes(query) ||
-    item.cat.toLowerCase().includes(query)
+    item.title.toLowerCase().includes(q) ||
+    item.desc.toLowerCase().includes(q) ||
+    item.cat.toLowerCase().includes(q)
   );
   renderResults(filtered);
 });
+
+// পেজ খোলার সাথে সাথেই ব্যাকগ্রাউন্ডে লোড শুরু হয়ে যাবে
+loadAllArticles();
