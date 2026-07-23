@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>অ্যাডমিন প্যানেল — ইতিহাসবিদ</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MJJ51BBR39"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MJJ51BBR39');
+</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -38,9 +47,23 @@
 
     <div class="admin-content">
   <div class="admin-tabs">
-    <button class="tab-btn active" data-tab="add">নতুন আর্টিকেল</button>
-    <button class="tab-btn" data-tab="list">সব আর্টিকেল</button>
+  <button class="tab-btn active" data-tab="dashboard">ড্যাশবোর্ড</button>
+  <button class="tab-btn" data-tab="add">নতুন আর্টিকেল</button>
+  <button class="tab-btn" data-tab="list">সব আর্টিকেল</button>
+</div>
+
+<div class="tab-content" id="tab-add" style="display:none;">
+  <h2 class="headline">ড্যাশবোর্ড</h2>
+  <div class="dashboard-grid" id="dashboardStats">
+    <p>লোড হচ্ছে...</p>
   </div>
+
+  <h3 class="headline" style="font-size:18px; margin-top:32px;">সবচেয়ে বেশি পঠিত</h3>
+  <div id="topViewed"></div>
+
+  <h3 class="headline" style="font-size:18px; margin-top:28px;">সবচেয়ে বেশি লাইক পাওয়া</h3>
+  <div id="topLiked"></div>
+</div>
 
  <!-- আর্টিকেল যোগ করার ফর্ম -->
   <div class="tab-content" id="tab-add">

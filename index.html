@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ইতিহাসবিদ</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MJJ51BBR39"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MJJ51BBR39');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Hind+Siliguri:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -46,7 +56,7 @@
         <span class="hero-caption" id="heroCaption">দুর্লভ আলোকচিত্র সংগ্রহ থেকে</span>
       </div>
       <div class="hero-copy">
-        <span class="hero-eyebrow">আজকের প্রকাশিত</span>
+        <span class="hero-eyebrow">মাত্র প্রকাশিত</span>
         <h1 class="headline" id="heroTitle">লোড হচ্ছে...</h1>
         <p id="heroDesc"></p>
         <div class="hero-meta">
@@ -67,7 +77,7 @@
     <div class="main-col">
       <div class="section-head">
         <span class="mark"></span>
-        <h2 class="headline">সাম্প্রতিক প্রকাশিত</h2>
+        <h2 class="headline">সাম্প্রতিক প্রতিবেদন</h2>
         <span class="rule"></span>
       </div>
      <div class="card-grid" id="dynamicArticles">
@@ -78,11 +88,9 @@
     <aside class="sidebar-col">
       <div class="sidebar-block">
   <h3>সর্বাধিক পঠিত</h3>
-  <a href="article.html" class="rank-item"><span class="rank-num">০১</span><p>পলাশীর যুদ্ধ: এক বিশ্বাসঘাতকতার পূর্ণাঙ্গ ইতিহাস</p></a>
-  <a href="article-2.html" class="rank-item"><span class="rank-num">০২</span><p>রোমান সাম্রাজ্যের পতনের পাঁচটি কারণ</p></a>
-  <a href="article-3.html" class="rank-item"><span class="rank-num">০৩</span><p>মুক্তিযুদ্ধে নারীদের অবদান: মুক্তিযোদ্ধাদের ভাষ্য</p></a>
-  <a href="article-4.html" class="rank-item"><span class="rank-num">০৪</span><p>সোনারগাঁও: বাংলার প্রাচীন রাজধানীর গল্প</p></a>
-
+  <div id="mostReadList">
+    <p style="color:var(--slate); font-size:13.5px;">লোড হচ্ছে...</p>
+  </div>
 </div>
 
       <div class="quote-block">
@@ -93,10 +101,12 @@
 
       <div class="sidebar-block">
   <h3>বিভাগসমূহ</h3>
-  <a href="#" class="rank-item"><p>প্রাচীন সভ্যতা</p></a>
-  <a href="#" class="rank-item"><p>মুক্তিযুদ্ধ ও স্বাধীনতা</p></a>
-  <a href="#" class="rank-item"><p>প্রত্নতত্ত্ব আবিষ্কার</p></a>
-  <a href="#" class="rank-item"><p>বিখ্যাত ব্যক্তিত্ব</p></a>
+  <a href="category-ancient.html" class="rank-item"><p>প্রাচীন সভ্যতা</p></a>
+  <a href="category-bengal.html" class="rank-item"><p>বাংলার ইতিহাস</p></a>
+  <a href="category-medieval.html" class="rank-item"><p>মধ্যযুগ</p></a>
+  <a href="category-colonial.html" class="rank-item"><p>ঔপনিবেশিক কাল</p></a>
+  <a href="category-war.html" class="rank-item"><p>যুদ্ধ ও বিপ্লব</p></a>
+  <a href="category-modern.html" class="rank-item"><p>আধুনিক ইতিহাস</p></a>
 </div>
     </aside>
   </div>
@@ -105,7 +115,7 @@
     <div class="footer-inner">
       <div>
         <h4 class="headline">ইতিহাসবিদ</h4>
-        <p style="line-height:1.8;">বিশ্ব ও বাংলার সমৃদ্ধ ইতিহাস নিয়ে নির্ভরযোগ্য সংবাদ ও গবেষণাধর্মী প্রতিবেদন।</p>
+        <p style="line-height:1.8;">বিশ্ব ও বাংলার সমৃদ্ধ ইতিহাস নিয়ে নির্ভরযোগ্য গবেষণাধর্মী প্রতিবেদন।</p>
       </div>
       <div>
         <h4>বিভাগ</h4>
@@ -197,6 +207,21 @@
         item.textContent = art.title || '';
         latestStrip.appendChild(item);
       });
+
+      // ---- "সর্বাধিক পঠিত" সাইডবার (views অনুযায়ী সাজানো) ----
+      const mostReadList = document.getElementById('mostReadList');
+      if (mostReadList) {
+        mostReadList.innerHTML = "";
+        const ranks = ['০১', '০২', '০৩', '০৪'];
+        const byViews = [...docs].sort((a, b) => (b.views || 0) - (a.views || 0));
+        byViews.slice(0, 4).forEach((art, i) => {
+          const item = document.createElement('a');
+          item.href = `read.html?id=${art.id}`;
+          item.className = 'rank-item';
+          item.innerHTML = `<span class="rank-num">${ranks[i]}</span><p>${art.title || ''}</p>`;
+          mostReadList.appendChild(item);
+        });
+      }
 
       // ---- কার্ড গ্রিড ----
       container.innerHTML = "";

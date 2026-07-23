@@ -72,3 +72,15 @@
 }
 .admin-article-card .actions .edit-btn{ color:var(--navy); }
 .admin-article-card .actions .delete-btn{ color:#B33; }
+
+.dashboard-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:16px; margin-top:20px; }
+.stat-box{ background:#fff; border:1px solid #E4D6AE; padding:20px; text-align:center; }
+.stat-box .stat-num{ font-family:'Tiro Bangla', serif; font-size:32px; color:var(--navy); }
+.stat-box .stat-label{ font-size:12.5px; color:var(--slate); margin-top:6px; }
+
+.top-item{
+  display:flex; justify-content:space-between; align-items:center;
+  background:#fff; border:1px solid #E4D6AE; padding:12px 18px; margin-bottom:10px;
+}
+.top-item span:first-child{ font-size:14px; color:var(--ink); }
+.top-item span:last-child{ font-size:13px; color:var(--bronze); font-weight:600; white-space:nowrap; margin-left:12px; }

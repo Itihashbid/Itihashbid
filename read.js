@@ -1,5 +1,5 @@
 import { db } from "./firebase-config.js";
-import { doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, getDoc, updateDoc, increment, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const params = new URLSearchParams(window.location.search);
 const articleId = params.get('id');
@@ -51,29 +51,29 @@ async function loadArticle(){
         if(localStorage.getItem(likedKey)) return;
         await updateDoc(docRef, { likes: increment(1) });
         const newLikes = (Number(likeCountEl.textContent) || 0) + 1;
-likeCountEl.textContent = newLikes;
+        likeCountEl.textContent = newLikes;
         localStorage.setItem(likedKey, 'true');
         likeBtn.classList.add('liked');
       });
 
       // শেয়ার বাটন
-document.getElementById('shareBtn').addEventListener('click', async () => {
-  const shareData = {
-    title: art.title,
-    text: art.desc,
-    url: window.location.href
-  };
-  if(navigator.share){
-    try{ await navigator.share(shareData); } catch(e){}
-  } else {
-    try {
-  await navigator.clipboard.writeText(window.location.href);
-  alert("লিংক কপি হয়েছে!");
-} catch {
-  alert("লিংক কপি করা যায়নি।");
-}
-  }
-});
+      document.getElementById('shareBtn').addEventListener('click', async () => {
+        const shareData = {
+          title: art.title,
+          text: art.desc,
+          url: window.location.href
+        };
+        if(navigator.share){
+          try{ await navigator.share(shareData); } catch(e){}
+        } else {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert("লিংক কপি হয়েছে!");
+          } catch {
+            alert("লিংক কপি করা যায়নি।");
+          }
+        }
+      });
 
     } else {
       contentDiv.innerHTML = "<p>এই আর্টিকেলটি খুঁজে পাওয়া যায়নি।</p>";

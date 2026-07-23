@@ -22,7 +22,7 @@ onAuthStateChanged(auth, (user) => {
   if(user){
     loginSection.style.display = "none";
     panelSection.style.display = "block";
-    loadArticles();
+    loadDashboard();
   } else {
     loginSection.style.display = "flex";
     panelSection.style.display = "none";
@@ -37,6 +37,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-content').forEach(c => c.style.display = "none");
     document.getElementById('tab-' + btn.dataset.tab).style.display = "block";
     if(btn.dataset.tab === "list") loadArticles();
+    if(btn.dataset.tab === "dashboard") loadDashboard();
   });
 });
 
@@ -125,4 +126,43 @@ async function loadArticles(){
     });
     listDiv.appendChild(card);
   });
+}
+
+
+// ---------- ড্যাশবোর্ড ----------
+async function loadDashboard(){
+  const statsDiv = document.getElementById('dashboardStats');
+  const topViewedDiv = document.getElementById('topViewed');
+  const topLikedDiv = document.getElementById('topLiked');
+
+  statsDiv.innerHTML = "<p>লোড হচ্ছে...</p>";
+  const snapshot = await getDocs(collection(db, "articles"));
+
+  let totalArticles = 0, totalViews = 0, totalLikes = 0;
+  const articles = [];
+
+  snapshot.forEach(docSnap => {
+    const art = docSnap.data();
+    totalArticles++;
+    totalViews += art.views || 0;
+    totalLikes += art.likes || 0;
+    articles.push({ title: art.title, views: art.views || 0, likes: art.likes || 0 });
+  });
+
+  statsDiv.innerHTML = `
+    <div class="stat-box"><div class="stat-num">${totalArticles}</div><div class="stat-label">মোট আর্টিকেল</div></div>
+    <div class="stat-box"><div class="stat-num">${totalViews}</div><div class="stat-label">মোট ভিউ</div></div>
+    <div class="stat-box"><div class="stat-num">${totalLikes}</div><div class="stat-label">মোট লাইক</div></div>
+  `;
+
+  const byViews = [...articles].sort((a,b) => b.views - a.views).slice(0,5);
+  const byLikes = [...articles].sort((a,b) => b.likes - a.likes).slice(0,5);
+
+  topViewedDiv.innerHTML = byViews.map(a => `
+    <div class="top-item"><span>${a.title}</span><span>👁️ ${a.views} ভিউ</span></div>
+  `).join('') || "<p>কোনো ডেটা নেই।</p>";
+
+  topLikedDiv.innerHTML = byLikes.map(a => `
+    <div class="top-item"><span>${a.title}</span><span>❤️ ${a.likes} লাইক</span></div>
+  `).join('') || "<p>কোনো ডেটা নেই।</p>";
 }
